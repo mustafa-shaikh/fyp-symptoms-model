@@ -2,6 +2,7 @@ from os import error
 from flask import Flask, request
 import numpy as np
 import pickle
+import json
 import symptoms_model
 import symptoms_model_store
 
@@ -12,8 +13,8 @@ isTrue = symptoms_model_store.symptoms_prediction()
 @app.route("/", methods = ["POST"])
 def hello():
     if request.method == "POST":
-        data = request.json.values()
-        symptoms_test = np.array(list(data))
+        data = json.loads(request.data)
+        symptoms_test = np.array(list(data.values()))
         symptoms_test = symptoms_test.reshape((1,-1))
         try:
             if(isTrue == True):
